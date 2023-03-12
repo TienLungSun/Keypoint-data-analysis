@@ -72,10 +72,10 @@ st.header("STS keypiont data analysis system")
 st.subheader("R'nR Elderly Care Series")
 #未選擇上傳資料顯示
 empty_element1 = st.empty()
-empty_element1.write("Analysis of keypoint data recognized by KeypointRCNN from sit-to-stand test video.")
+empty_element1.write("Analyze keypoint data recognized by KeypointRCNN from sit-to-stand video. The data file looks like this.")
 empty_element2 = st.empty()
 image_path = "Example.png"
-empty_element2.image(image_path, caption='Example Image')
+empty_element2.image(image_path, caption='Example')
 
 # 上傳檔案
 uploaded_file = st.sidebar.file_uploader("Select keypoint data file", type=["xlsx"])
