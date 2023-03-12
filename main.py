@@ -70,10 +70,19 @@ def trans_select(data_selectXY,data_selectPiont):
 # Set page title
 st.header("STS keypiont data analysis system")
 st.subheader("R'nR Elderly Care Series")
+#未選擇上傳資料顯示
+empty_element1 = st.empty()
+empty_element1.write("Analysis of keypoint data recognized by KeypointRCNN from sit-to-stand test video.")
+empty_element2 = st.empty()
+image_path = "Example.png"
+empty_element2.image(image_path, caption='Example Image')
 
 # 上傳檔案
 uploaded_file = st.sidebar.file_uploader("Select keypoint data file", type=["xlsx"])
 if uploaded_file:
+    if uploaded_file is not None:
+        empty_element1.text("")
+        empty_element2.empty()
     df = pd.read_excel(uploaded_file)
     data_selectXY = st.sidebar.radio('Direction:', ("x","y"), horizontal=True)
     
@@ -143,7 +152,7 @@ if uploaded_file:
                 msg = "SE1, scale= "+ str(scale_factor)
                 msg_container.write(msg)    
                 ts_i = coarse_grain(ts, scale_factor)
-           
+        
                 se1 = sample_entropy1(ts_i, 3, r_ratio) 
                 lst1.append(se1)
             
@@ -258,7 +267,7 @@ if uploaded_file:
         with col2:
             st.pyplot(fig3)
 
-         #產生excel檔案
+        #產生excel檔案
         buffer = io.BytesIO()
         with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
             df1 = pd.DataFrame(analysis.Sp_Value_dict)
