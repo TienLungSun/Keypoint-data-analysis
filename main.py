@@ -126,15 +126,12 @@ if uploaded_file:
         spec = tfa_morlet(time_series, pts_per_second, fmin, fmax, fstep)
         spec_reverse = np.flip(spec, axis=0)
         plt.figure(figsize=(12, 6))
-        plt.subplot(122)
         plt.imshow(spec_reverse, extent=[0, x_max, fmin, fmax], cmap='jet', aspect='auto')
-        plt.xlabel('Time')
-        plt.ylabel('Frequency')
-        plt.title('CWT')
+        plt.xlabel('Time', fontsize=14)
+        plt.ylabel('Frequency', fontsize=14)
+        plt.title('CWT', fontsize=14)
         plt.grid()
         plt.colorbar()
-
-        plt.tight_layout()
         st.pyplot(plt)
 
         # MSE
@@ -179,17 +176,17 @@ if uploaded_file:
             for elt in lst2:
                 tmp.append(elt[idx])
             new_lst2.append(tmp)
-        fig, ax = plt.subplots(figsize=(12, 9))
-        ax.plot(new_lst1[0], color='red',label="SE1 m=1")
-        ax.plot(new_lst1[1], color='orange',label="SE1 m=2")
-        ax.plot(new_lst1[2], color='pink',label="SE1 m=3")
-        ax.plot(new_lst2[0], color='blue',label="SE2 m=1")
-        ax.plot(new_lst2[1], color='purple',label="SE2 m=2")
-        ax.plot(new_lst2[2], color='black',label="SE3 m=3")
-        ax.legend(fontsize=20)
-        ax.set_xticks(list(range(maxScale)))
-        ax.set_xticklabels(list(range(1, maxScale+1)), fontsize=18)
-        ax.tick_params(axis='y', labelsize=18)
+        plt.figure(figsize=(12, 6))
+        plt.plot(new_lst1[0], color='red',label="SE1 m=1")
+        plt.plot(new_lst1[1], color='orange',label="SE1 m=2")
+        plt.plot(new_lst1[2], color='pink',label="SE1 m=3")
+        plt.plot(new_lst2[0], color='blue',label="SE2 m=1")
+        plt.plot(new_lst2[1], color='purple',label="SE2 m=2")
+        plt.plot(new_lst2[2], color='black',label="SE3 m=3")
+        plt.legend(fontsize=14)
+        plt.xticks(list(range(maxScale)), list(range(1,maxScale+1)), fontsize=14)
+        plt.tick_params(axis='y', labelsize=14)
+        plt.grid()
         st.pyplot(plt)
 
         pfnstand, sittostand, ptsit, stantosit = [], [], [], []
@@ -204,7 +201,7 @@ if uploaded_file:
                 print(e)
 
 # 長條圖
-        fig2, ax2 = plt.subplots(figsize=(12,10))
+        fig2, ax2 = plt.subplots(figsize=(12,14))
         ax2.set_yticks([])
         ax2.set_xticks([])
         ax2.set_frame_on(False)
@@ -237,7 +234,7 @@ if uploaded_file:
         ax2.set_yticks([0, 0.5, 1, 1.5])
 
         # 盒鬚圖
-        fig3, ax3 = plt.subplots(figsize=(12,10))
+        fig3, ax3 = plt.subplots(figsize=(12,12))
         ax3.set_yticks([])
         ax3.set_xticks([])
         ax3.set_frame_on(False)
