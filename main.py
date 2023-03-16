@@ -117,7 +117,7 @@ if uploaded_file:
         pts_per_second = 60
         fmin = 0.1
         fmax = 1.5 #社區老人做坐到站每秒極限是2.5次
-        fstep = 0.1
+        fstep = 0.01
         taxis = np.linspace(1, ts_length, ts_length)
         taxis = taxis / pts_per_second  # 把單位改成 sec
         x_max = ts_length/pts_per_second  #畫小波圖的X軸的最大值(秒)
