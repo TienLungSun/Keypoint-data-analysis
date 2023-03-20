@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import convolve
 from segment_analysis import Analysis
-from global_analysis import tfa_morlet, coarse_grain, sample_entropy1, sample_entropy2
+from global_analysis import tfa_morlet, coarse_grain, sample_entropy
 
 def gen_markers(analysis, point, colors):
     # point= 'Prepare for next stand' , 'Sit-to-stand' , 'Prepare to sit' , 'Stand to sit'
@@ -139,50 +139,25 @@ if uploaded_file:
         time_series = np.array(Data_Arr.values)
         time_series_length = time_series.shape[0]
         ts = time_series.reshape(time_series_length,)
-        lst1 = []
-        lst2 = []
-        lstnolds = []
+        lst = []
         maxScale = 6
         r_ratio = 0.15
-        with st.spinner('Calculating SE. It takes a while, please wait...'):
-            for scale_factor in range (1, maxScale+1):
-                msg = "SE1, scale= "+ str(scale_factor)
-                msg_container.write(msg)    
-                ts_i = coarse_grain(ts, scale_factor)
+        for scale_factor in range (1, maxScale+1):
+            ts_i = coarse_grain(ts, scale_factor)   
+            se = sample_entropy(ts_i, 3, r_ratio) 
+            lst.append(se)
         
-                se1 = sample_entropy1(ts_i, 3, r_ratio) 
-                lst1.append(se1)
-            
-                tmp = [] #蒐集此 scale 下 m=2, 3 之 SE, m=1 不用
-                for m in range(2, 4): #m=2, 3 
-                    msg = "SE2, scale= "+ str(scale_factor) + ", m=" + str(m) 
-                    msg_container.write(msg)    
-                    se2 = sample_entropy2(ts_i, m, r_ratio)
-                    tmp.append(se2)
-                lst2.append(tmp)
-                msg_container.empty()
-        
-        new_lst1 = []
+        new_lst = []
         for idx in range(3): #0, 1, 2
             tmp = []
-            for elt in lst1:
+            for elt in lst:
                 tmp.append(elt[idx])
-            new_lst1.append(tmp)
+            new_lst.append(tmp)
         
-        #collect SE for m=1, 2, 3 from lst2
-        new_lst2 = []
-        for idx in range(2): #0,1
-            tmp = []
-            for elt in lst2:
-                tmp.append(elt[idx])
-            new_lst2.append(tmp)
-
         plt.figure(figsize=(12, 6))
-        plt.plot(new_lst1[0], color='red',label="SE1 m=1")
-        plt.plot(new_lst1[1], color='orange',label="SE1 m=2")
-        plt.plot(new_lst1[2], color='pink',label="SE1 m=3")
-        plt.plot(new_lst2[0], color='blue',label="SE2 m=2")
-        plt.plot(new_lst2[1], color='purple',label="SE2 m=3")
+        plt.plot(new_lst[0], color='red',label="m=1")
+        plt.plot(new_lst[1], color='blue',label="m=2")
+        plt.plot(new_lst[2], color='black',label="m=3")
         plt.legend(fontsize=14)
         plt.xticks(list(range(maxScale)), list(range(1,maxScale+1)), fontsize=14)
         plt.tick_params(axis='y', labelsize=14)

@@ -40,7 +40,7 @@ def coarse_grain(ts, scale):  #比較容易了解版本
         ts1[i] = np.mean(seg)
     return ts1
 
-def sample_entropy1(ts, Mdim, r_ratio):
+def sample_entropy(ts, Mdim, r_ratio):
     n = len(ts)
     r = r_ratio*np.std(ts)
     SE=np.zeros(Mdim) # Mdim 個 SE
@@ -60,26 +60,3 @@ def sample_entropy1(ts, Mdim, r_ratio):
         else:
             SE[m] = -np.log(count_m[m+1]/count_m[m]) 
     return SE
-
-def sample_entropy2(ts, m, r_ratio):
-    n = len(ts)
-    r = r_ratio*np.std(ts)
-    count_m = np.zeros(n)
-    count_m_plus_1 = np.zeros(n)
-
-    for i in range(n-m-1): # index (min,max)=(0,n-1), i+m+1=n-1 => i=n-m-2
-        for j in range(i+1, n-m-1): # j+m+1= n-1, j=n-m-2
-            if(abs(ts[i:i+m]-ts[j:j+m]).max() <= r):
-                count_m[i] += 1
-                if(abs(ts[i:i+m+1]-ts[j:j+m+1]).max() <= r): 
-                    count_m_plus_1[i] += 1
-                    
-    # Calculate the sample entropy.
-    sum_m = np.sum(count_m)
-    sum_m_plus_1 = np.sum(count_m_plus_1)
-    if sum_m == 0 or sum_m_plus_1 == 0:
-        sample_entropy = 0
-    else:
-        sample_entropy = -np.log(sum_m_plus_1 / sum_m)
-
-    return sample_entropy
